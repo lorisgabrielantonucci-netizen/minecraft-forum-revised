@@ -8,68 +8,74 @@
 </head>
 <body>
 
-    <!-- Header & Navigation Bar Stile Minecraft Forum -->
+    <!-- Header / Nav Bar Stile Minecraft Forum -->
     <header class="header-main">
         <div class="nav-container">
-            <div class="brand-logo">
+            <div class="brand-logo" onclick="showTab('forum-tab')">
                 <span class="text-green">MINECRAFT</span><span class="text-white">FORUM</span>
             </div>
             <nav class="nav-links">
-                <button class="tab-btn active" onclick="showTab('forum-tab', this)">FORUMS</button>
-                <button class="tab-btn" onclick="showTab('chat-tab', this)">CHAT GLOBALE</button>
+                <button class="tab-btn active" id="btn-forum" onclick="showTab('forum-tab')">FORUMS</button>
+                <button class="tab-btn" id="btn-chat" onclick="showTab('chat-tab')">CHAT GLOBALE</button>
             </nav>
         </div>
     </header>
 
-    <!-- Contenitore Principale -->
     <div class="wrapper">
         
-        <!-- SEZIONE FORUMS -->
+        <!-- TAB 1: LISTA FORUM E THREAD -->
         <main id="forum-tab" class="tab-content active">
             <div class="category-header">
                 <h2>DISCUSSIONI MINECRAFT</h2>
                 <button class="mc-btn" onclick="toggleForm('forum-create-box')">+ CREA THREAD</button>
             </div>
 
-            <!-- Form Creazione Thread (Nascosto di Default) -->
+            <!-- Form Creazione Thread -->
             <div id="forum-create-box" class="mc-panel hidden">
                 <h3>Crea una Nuova Discussione</h3>
                 <input type="text" id="threadTitle" placeholder="Titolo del Thread..." class="mc-input">
                 <textarea id="threadContent" placeholder="Scrivi il contenuto..." class="mc-input mc-area"></textarea>
                 <div class="upload-box">
-                    <label for="threadImg">Carica Immagine (opzionale):</label>
+                    <label>Carica Immagine (opzionale):</label>
                     <input type="file" id="threadImg" accept="image/*">
                 </div>
-                <button class="mc-btn" onclick="publishThread()">PUBBLICA</button>
+                <button class="mc-btn" onclick="publishThread()">PUBBLICA THREAD</button>
             </div>
 
-            <!-- Lista Forum -->
-            <div id="forumList" class="forum-grid">
-                <div class="forum-row">
-                    <div class="forum-icon">💬</div>
-                    <div class="forum-info">
-                        <h3 class="forum-title">Discussioni Generali</h3>
-                        <p class="forum-desc">Chiacchiere su Minecraft, notizie sugli aggiornamenti e idee per la community.</p>
-                    </div>
-                </div>
-                <div class="forum-row">
-                    <div class="forum-icon">🎮</div>
-                    <div class="forum-info">
-                        <h3 class="forum-title">Server & Multiplayer</h3>
-                        <p class="forum-desc">Trova compagni di avventura o fai pubblicità al tuo server Minecraft.</p>
-                    </div>
-                </div>
-                <div class="forum-row">
-                    <div class="forum-icon">🛠️</div>
-                    <div class="forum-info">
-                        <h3 class="forum-title">Supporto & Aiuto Tecnico</h3>
-                        <p class="forum-desc">Chiedi aiuto per bug, installazione di mod, texture pack o problemi di prestazione.</p>
-                    </div>
-                </div>
-            </div>
+            <!-- Elenco Thread Sfogliabili -->
+            <div id="forumList" class="forum-grid"></div>
         </main>
 
-        <!-- SEZIONE CHAT GLOBALE -->
+        <!-- TAB 2: VISTA DETTAGLIO THREAD + COMMENTI -->
+        <main id="thread-detail-tab" class="tab-content">
+            <button class="mc-btn btn-back" onclick="showTab('forum-tab')">← Torna ai Forum</button>
+            
+            <article class="mc-panel detail-panel">
+                <h2 id="detailTitle" class="detail-title"></h2>
+                <div id="detailBody" class="detail-body"></div>
+                <div id="detailImgBox"></div>
+            </article>
+
+            <!-- Sezione Commenti -->
+            <section class="mc-panel comments-section">
+                <h3>💬 Commenti (<span id="commentCount">0</span>)</h3>
+                
+                <div id="commentsList" class="comments-list"></div>
+
+                <div class="add-comment-box">
+                    <h4>Aggiungi un commento</h4>
+                    <input type="text" id="commentUser" placeholder="Il tuo Nickname..." class="mc-input">
+                    <textarea id="commentText" placeholder="Scrivi una risposta..." class="mc-input mc-area-sm"></textarea>
+                    <div class="upload-box">
+                        <label>Allega Foto (opzionale):</label>
+                        <input type="file" id="commentImg" accept="image/*">
+                    </div>
+                    <button class="mc-btn" onclick="addComment()">INVIA COMMENTO</button>
+                </div>
+            </section>
+        </main>
+
+        <!-- TAB 3: CHAT GLOBALE -->
         <main id="chat-tab" class="tab-content">
             <div class="category-header">
                 <h2>CHAT GLOBALE</h2>
@@ -87,7 +93,7 @@
                     </div>
                     <div class="chat-action-row">
                         <div class="upload-box">
-                            <label for="chatImg">Invia Immagine:</label>
+                            <label>Invia Immagine:</label>
                             <input type="file" id="chatImg" accept="image/*">
                         </div>
                         <button class="mc-btn" onclick="sendChatMessage()">INVIA</button>
@@ -98,6 +104,6 @@
 
     </div>
 
-    <script src="script.js"></script>
+    <script src="./script.js"></script>
 </body>
 </html>
