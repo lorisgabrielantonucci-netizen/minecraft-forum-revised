@@ -8,85 +8,87 @@
 </head>
 <body>
 
-    <!-- Header / Navbar Stile Minecraft Forum -->
-    <header class="navbar">
-        <div class="nav-container">
-            <div class="logo">
-                <span class="logo-green">MINECRAFT</span> FORUM
+    <!-- Header & Navbar Stile Originale -->
+    <header class="top-header">
+        <div class="header-inner">
+            <div class="brand">
+                <span class="logo-bold">MINECRAFT</span><span class="logo-light">FORUM</span>
             </div>
-            <nav>
-                <button class="nav-btn active" onclick="switchTab('forum')">FORUM</button>
-                <button class="nav-btn" onclick="switchTab('chat')">CHAT GLOBALE</button>
+            <nav class="main-nav">
+                <button class="nav-link active" onclick="switchSection('forum', this)">FORUMS</button>
+                <button class="nav-link" onclick="switchSection('chat', this)">CHAT GLOBALE</button>
             </nav>
         </div>
     </header>
 
-    <main class="main-container">
-
-        <!-- SEZIONE FORUM -->
-        <section id="forumTab" class="tab-content active">
-            <div class="section-header">
-                <h2>Category: Discussioni Minecraft</h2>
-                <button class="btn-green" onclick="toggleForm('newForumForm')">+ Crea Nuovo Forum</button>
+    <div class="container">
+        
+        <!-- SEZIONE 1: FORUMS -->
+        <main id="forumSection" class="section-content active">
+            <div class="section-title-bar">
+                <h2>FORUM DISCUSSIONI</h2>
+                <button class="btn-mc" onclick="toggleElement('createForumBox')">+ NUOVO THREAD</button>
             </div>
 
-            <!-- Form per creare un forum (nascosto di default) -->
-            <div id="newForumForm" class="create-card hidden">
-                <h3>Crea un nuovo Thread/Forum</h3>
-                <input type="text" id="forumTitle" placeholder="Titolo del Forum...">
-                <textarea id="forumDesc" placeholder="Descrizione o contenuto..."></textarea>
-                <div class="file-input-wrapper">
-                    <label for="forumImage">Aggiungi Immagine (opzionale):</label>
-                    <input type="file" id="forumImage" accept="image/*">
+            <!-- Form Creazione Thread -->
+            <div id="createForumBox" class="panel hidden">
+                <h3>Crea una Nuova Discussione</h3>
+                <input type="text" id="newTitle" placeholder="Titolo della discussione..." class="mc-input">
+                <textarea id="newDesc" placeholder="Scrivi il contenuto..." class="mc-input mc-textarea"></textarea>
+                <div class="file-upload">
+                    <label>Immagine (opzionale):</label>
+                    <input type="file" id="newImg" accept="image/*">
                 </div>
-                <button class="btn-green" onclick="createForum()">Pubblica Forum</button>
+                <button class="btn-mc" onclick="addForumThread()">PUBBLICA</button>
             </div>
 
-            <!-- Lista dei Forum -->
-            <div id="forumList" class="forum-list">
-                <!-- Forum predefinito 1 -->
-                <div class="forum-card">
-                    <div class="forum-info">
-                        <h3>💬 Discussioni Generali</h3>
-                        <p>Parla degli ultimi aggiornamenti di Minecraft, idee e notizie sulla community.</p>
+            <!-- Lista Forum -->
+            <div id="forumContainer" class="forum-grid">
+                <article class="forum-card">
+                    <div class="forum-icon">💬</div>
+                    <div class="forum-details">
+                        <h3>Discussioni Generali</h3>
+                        <p>Notizie ufficiali, aggiornamenti e chiacchiere su Minecraft.</p>
+                    </div>
+                </article>
+                <article class="forum-card">
+                    <div class="forum-icon">🎮</div>
+                    <div class="forum-details">
+                        <h3>Server & Multiplayer</h3>
+                        <p>Trova compagni di gioco o mostra il tuo server alla community.</p>
+                    </div>
+                </article>
+            </div>
+        </main>
+
+        <!-- SEZIONE 2: CHAT GLOBALE -->
+        <main id="chatSection" class="section-content">
+            <div class="section-title-bar">
+                <h2>CHAT GLOBALE COMMUNITY</h2>
+            </div>
+
+            <div class="panel chat-panel">
+                <div id="chatMessages" class="chat-messages">
+                    <div class="msg system-msg">Benvenuto nella Chat Globale! Scrivi un messaggio per iniziare.</div>
+                </div>
+
+                <div class="chat-form">
+                    <div class="chat-inputs-row">
+                        <input type="text" id="chatNick" placeholder="Nickname..." class="mc-input nick-input">
+                        <input type="text" id="chatText" placeholder="Scrivi un messaggio..." class="mc-input text-input">
+                    </div>
+                    <div class="chat-actions-row">
+                        <div class="file-upload">
+                            <label>Allega Foto:</label>
+                            <input type="file" id="chatImg" accept="image/*">
+                        </div>
+                        <button class="btn-mc" onclick="sendGlobalMessage()">INVIA</button>
                     </div>
                 </div>
-                <!-- Forum predefinito 2 -->
-                <div class="forum-card">
-                    <div class="forum-info">
-                        <h3>🎮 Server & Multiplayer</h3>
-                        <p>Condividi il tuo server, cerca uno staff o trova compagni di avventura.</p>
-                    </div>
-                </div>
             </div>
-        </section>
+        </main>
 
-        <!-- SEZIONE CHAT GLOBALE -->
-        <section id="chatTab" class="tab-content">
-            <div class="section-header">
-                <h2>Chat Globale Community</h2>
-            </div>
-            
-            <div class="chat-container">
-                <div class="chat-box" id="chatBox">
-                    <div class="chat-msg system">Benvenuto nella Chat Globale! Rispetta le regole della community.</div>
-                </div>
-
-                <div class="chat-controls">
-                    <div class="chat-inputs">
-                        <input type="text" id="chatUser" placeholder="Il tuo Nickname..." style="width: 30%;">
-                        <input type="text" id="chatMsg" placeholder="Scrivi un messaggio..." style="width: 68%;">
-                    </div>
-                    <div class="file-input-wrapper">
-                        <label for="chatImage">Allega Foto:</label>
-                        <input type="file" id="chatImage" accept="image/*">
-                    </div>
-                    <button class="btn-green" onclick="sendChatMessage()">Invia Messaggio</button>
-                </div>
-            </div>
-        </section>
-
-    </main>
+    </div>
 
     <script src="script.js"></script>
 </body>
