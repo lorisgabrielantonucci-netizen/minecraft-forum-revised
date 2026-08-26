@@ -1,84 +1,86 @@
-// Navigazione a schede (Forums / Chat Globale)
-function switchSection(sectionId, btnElement) {
-    document.querySelectorAll('.section-content').forEach(sec => sec.classList.remove('active'));
-    document.querySelectorAll('.nav-link').forEach(btn => btn.classList.remove('active'));
+// Cambio scheda tra Forum e Chat
+function showTab(tabId, btn) {
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
 
-    document.getElementById(sectionId + 'Section').classList.add('active');
-    btnElement.classList.add('active');
+    document.getElementById(tabId).classList.add('active');
+    btn.classList.add('active');
 }
 
-// Mostra / Nascondi pannello di creazione
-function toggleElement(id) {
-    const el = document.getElementById(id);
-    el.classList.toggle('hidden');
+// Mostra o nasconde il form di creazione
+function toggleForm(id) {
+    const box = document.getElementById(id);
+    box.classList.toggle('hidden');
 }
 
-// Aggiungi Discussione nel Forum
-function addForumThread() {
-    const title = document.getElementById('newTitle').value.trim();
-    const desc = document.getElementById('newDesc').value.trim();
-    const imgInput = document.getElementById('newImg');
-    const container = document.getElementById('forumContainer');
+// Pubblica una nuova discussione nel Forum
+function publishThread() {
+    const title = document.getElementById('threadTitle').value.trim();
+    const content = document.getElementById('threadContent').value.trim();
+    const imgFile = document.getElementById('threadImg');
+    const list = document.getElementById('forumList');
 
-    if (!title || !desc) {
-        alert("Inserisci sia il titolo che la descrizione.");
+    if (!title || !content) {
+        alert("Per favore, inserisci un titolo e il contenuto del thread.");
         return;
     }
 
-    const article = document.createElement('article');
-    article.className = 'forum-card';
+    const row = document.createElement('div');
+    row.className = 'forum-row';
 
-    let imageHtml = '';
-    if (imgInput.files && imgInput.files[0]) {
-        const url = URL.createObjectURL(imgInput.files[0]);
-        imageHtml = `<br><img src="${url}" class="attached-img">`;
+    let imgTag = '';
+    if (imgFile.files && imgFile.files[0]) {
+        const imgUrl = URL.createObjectURL(imgFile.files[0]);
+        imgTag = `<br><img src="${imgUrl}" class="preview-img">`;
     }
 
-    article.innerHTML = `
+    row.innerHTML = `
         <div class="forum-icon">📌</div>
-        <div class="forum-details">
-            <h3>${cleanText(title)}</h3>
-            <p>${cleanText(desc)}</p>
-            ${imageHtml}
+        <div class="forum-info">
+            <h3 class="forum-title">${sanitize(title)}</h3>
+            <p class="forum-desc">${sanitize(content)}</p>
+            ${imgTag}
         </div>
     `;
 
-    container.prepend(article);
+    list.prepend(row);
 
-    document.getElementById('newTitle').value = '';
-    document.getElementById('newDesc').value = '';
-    imgInput.value = '';
-    toggleElement('createForumBox');
+    // Pulizia form
+    document.getElementById('threadTitle').value = '';
+    document.getElementById('threadContent').value = '';
+    imgFile.value = '';
+    toggleForm('forum-create-box');
 }
 
-// Invia Messaggio in Chat Globale
-function sendGlobalMessage() {
-    const nick = document.getElementById('chatNick').value.trim() || 'Utente';
+// Invia un messaggio nella Chat Globale
+function sendChatMessage() {
+    const nick = document.getElementById('chatUser').value.trim() || 'Utente';
     const text = document.getElementById('chatText').value.trim();
-    const imgInput = document.getElementById('chatImg');
+    const imgFile = document.getElementById('chatImg');
     const box = document.getElementById('chatMessages');
 
-    if (!text && (!imgInput.files || !imgInput.files[0])) return;
+    if (!text && (!imgFile.files || !imgFile.files[0])) return;
 
-    const msgDiv = document.createElement('div');
-    msgDiv.className = 'msg';
+    const bubble = document.createElement('div');
+    bubble.className = 'chat-bubble';
 
-    let imageHtml = '';
-    if (imgInput.files && imgInput.files[0]) {
-        const url = URL.createObjectURL(imgInput.files[0]);
-        imageHtml = `<br><img src="${url}" class="attached-img">`;
+    let imgTag = '';
+    if (imgFile.files && imgFile.files[0]) {
+        const imgUrl = URL.createObjectURL(imgFile.files[0]);
+        imgTag = `<br><img src="${imgUrl}" class="preview-img">`;
     }
 
-    msgDiv.innerHTML = `<strong>${cleanText(nick)}:</strong> ${cleanText(text)} ${imageHtml}`;
+    bubble.innerHTML = `<strong>${sanitize(nick)}:</strong> ${sanitize(text)} ${imgTag}`;
 
-    box.appendChild(msgDiv);
+    box.appendChild(bubble);
     box.scrollTop = box.scrollHeight;
 
     document.getElementById('chatText').value = '';
-    imgInput.value = '';
+    imgFile.value = '';
 }
 
-function cleanText(str) {
+// Sanitizzazione testo
+function sanitize(str) {
     const temp = document.createElement('div');
     temp.textContent = str;
     return temp.innerHTML;
