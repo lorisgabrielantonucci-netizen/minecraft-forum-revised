@@ -1,146 +1,193 @@
-// Cambio Sezioni (Tab)
-function switchTab(tabId) {
-    document.querySelectorAll('.tab-content').forEach(tab => {
-        tab.classList.remove('active');
-    });
-
-    document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.classList.remove('active');
-    });
-
-    const targetTab = document.getElementById('tab-' + tabId);
-    if(targetTab) targetTab.classList.add('active');
-
-    // Evidenzia il pulsante del menu cliccato
-    const activeBtn = Array.from(document.querySelectorAll('.nav-btn')).find(b => b.getAttribute('onclick').includes(tabId));
-    if(activeBtn) activeBtn.classList.add('active');
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-// Commenti per gli Articoli Admin
-function addArticleComment(e, articleId) {
-    e.preventDefault();
-    const form = e.target;
-    const author = form.querySelector('.c-author').value;
-    const text = form.querySelector('.c-text').value;
-    const container = document.getElementById('comments-' + articleId);
-
-    const commentDiv = document.createElement('div');
-    commentDiv.className = 'comment-item';
-    commentDiv.innerHTML = `<strong>${escapeHTML(author)}:</strong> ${escapeHTML(text)}`;
-
-    container.appendChild(commentDiv);
-    form.reset();
+body {
+    background-color: #111;
+    color: #fff;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
 }
 
-// Gestione FORUM (Thread Creati dagli Utenti)
-document.addEventListener("DOMContentLoaded", function() {
-    const forumForm = document.getElementById('forum-form');
-    const threadsList = document.getElementById('forum-threads-list');
+/* Sfondo Minecraft Sfocato */
+.bg-blur {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://images.unsplash.com/photo-1627856013091-fed6e4e30025?q=80&w=1920&auto=format&fit=crop') no-repeat center center fixed;
+    background-size: cover;
+    filter: blur(8px) brightness(0.4);
+    transform: scale(1.05); /* Evita bordi bianchi causati dal blur */
+    z-index: -1;
+}
 
-    loadThreads();
+/* Header Stile Minecraft Forum */
+.header {
+    background: rgba(20, 20, 20, 0.85);
+    border-bottom: 3px solid #55aa55;
+    padding: 15px 0;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
 
-    if(forumForm) {
-        forumForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const user = document.getElementById('forum-user').value;
-            const title = document.getElementById('forum-title').value;
-            const msg = document.getElementById('forum-msg').value;
+.logo-text {
+    font-family: 'Impact', 'Arial Black', sans-serif;
+    font-size: 2.5rem;
+    color: #55ff55;
+    text-shadow: 2px 2px 0px #000;
+    letter-spacing: 2px;
+}
 
-            const newThread = {
-                id: Date.now(),
-                user: user,
-                title: title,
-                msg: msg,
-                date: new Date().toLocaleDateString("it-IT"),
-                replies: []
-            };
+.logo-sub {
+    color: #aaa;
+    font-size: 0.9rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
 
-            let threads = JSON.parse(localStorage.getItem('mc_threads_revised')) || [];
-            threads.unshift(newThread);
-            localStorage.setItem('mc_threads_revised', JSON.stringify(threads));
+/* Container Principale */
+.main-wrapper {
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 0 15px;
+}
 
-            loadThreads();
-            forumForm.reset();
-        });
-    }
+.content-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+}
 
-    function loadThreads() {
-        let threads = JSON.parse(localStorage.getItem('mc_threads_revised')) || [];
-        threadsList.innerHTML = '';
-
-        if(threads.length === 0) {
-            threadsList.innerHTML = '<p style="color:#777;">Nessun thread creato nel forum. Creane uno tu!</p>';
-            return;
-        }
-
-        threads.forEach(t => {
-            const card = document.createElement('div');
-            card.className = 'forum-thread-card';
-            
-            let repliesHTML = '';
-            t.replies.forEach(r => {
-                repliesHTML += `<div class="comment-item"><strong>${escapeHTML(r.user)}:</strong> ${escapeHTML(r.msg)}</div>`;
-            });
-
-            card.innerHTML = `
-                <h4 style="margin:0 0 5px 0;">${escapeHTML(t.title)}</h4>
-                <p style="margin:0 0 8px 0; color:#444;">${escapeHTML(t.msg)}</p>
-                <div style="font-size:10px; color:#777;">Inviato da <b>${escapeHTML(t.user)}</b> il ${t.date}</div>
-                
-                <div class="comment-section">
-                    <h5>Risposte (${t.replies.length})</h5>
-                    <div class="comments-list">${repliesHTML}</div>
-                    <form onsubmit="addThreadReply(event, ${t.id})" class="mini-comment-form">
-                        <input type="text" placeholder="Nome" class="c-author" required>
-                        <input type="text" placeholder="Rispondi al thread..." class="c-text" required>
-                        <button type="submit">Invia</button>
-                    </form>
-                </div>
-            `;
-            threadsList.appendChild(card);
-        });
-    }
-
-    // Gestione CHAT GLOBALE
-    const chatForm = document.getElementById('chat-form');
-    const chatList = document.getElementById('chat-messages-list');
-
-    if(chatForm) {
-        chatForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const user = document.getElementById('chat-user').value;
-            const msg = document.getElementById('chat-msg').value;
-
-            const item = document.createElement('div');
-            item.className = 'chat-msg-item';
-            item.innerHTML = `<span style="color:#2a5d1b; font-weight:bold;">${escapeHTML(user)}:</span> ${escapeHTML(msg)}`;
-            
-            chatList.appendChild(item);
-            chatForm.querySelector('#chat-msg').value = '';
-            chatList.scrollTop = chatList.scrollHeight;
-        });
-    }
-});
-
-// Aggiungi risposta a un thread
-function addThreadReply(e, threadId) {
-    e.preventDefault();
-    const form = e.target;
-    const author = form.querySelector('.c-author').value;
-    const text = form.querySelector('.c-text').value;
-
-    let threads = JSON.parse(localStorage.getItem('mc_threads_revised')) || [];
-    let target = threads.find(t => t.id === threadId);
-
-    if(target) {
-        target.replies.push({ user: author, msg: text });
-        localStorage.setItem('mc_threads_revised', JSON.stringify(threads));
-        location.reload();
+@media (max-width: 768px) {
+    .content-container {
+        grid-template-columns: 1fr;
     }
 }
 
-function escapeHTML(str) {
-    return str.replace(/[&<>'"]/g, tag => ({
-        '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
-    }[tag] || tag));
+/* Schede (Card) Stile Forum Originale */
+.card {
+    background: rgba(30, 30, 30, 0.9);
+    border: 1px solid #444;
+    border-radius: 4px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.6);
+    display: flex;
+    flex-direction: column;
+}
+
+.card-header {
+    padding: 12px 15px;
+    background: #222;
+    border-bottom: 2px solid #55aa55;
+}
+
+.card-header h2 {
+    font-size: 1.1rem;
+    color: #55ff55;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.card-body {
+    padding: 15px;
+}
+
+/* Elementi Forum */
+.forum-item {
+    background: rgba(45, 45, 45, 0.8);
+    border: 1px solid #333;
+    border-left: 4px solid #55aa55;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 2px;
+}
+
+.forum-item h3 {
+    font-size: 1rem;
+    color: #fff;
+    margin-bottom: 4px;
+}
+
+.forum-item p {
+    font-size: 0.85rem;
+    color: #bbb;
+}
+
+/* Stile Chat */
+.chat-body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.chat-box {
+    background: rgba(15, 15, 15, 0.9);
+    border: 1px solid #333;
+    height: 280px;
+    overflow-y: auto;
+    padding: 10px;
+    margin-bottom: 12px;
+    border-radius: 2px;
+}
+
+.system-msg {
+    color: #888;
+    font-size: 0.85rem;
+    font-style: italic;
+    margin-bottom: 8px;
+}
+
+.chat-msg {
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    background: rgba(50, 50, 50, 0.6);
+    padding: 5px 8px;
+    border-radius: 3px;
+    word-break: break-word;
+}
+
+.chat-msg strong {
+    color: #55ff55;
+}
+
+.chat-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.chat-form input {
+    background: #222;
+    border: 1px solid #444;
+    color: #fff;
+    padding: 8px 10px;
+    border-radius: 2px;
+    font-size: 0.9rem;
+}
+
+.chat-form input:focus {
+    outline: none;
+    border-color: #55aa55;
+}
+
+.btn-green {
+    background: #2e7d32;
+    color: #fff;
+    border: 1px solid #4caf50;
+    padding: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    border-radius: 2px;
+    transition: background 0.2s;
+}
+
+.btn-green:hover {
+    background: #388e3c;
 }
