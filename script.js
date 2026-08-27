@@ -1,3 +1,39 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Mio Forum Minecraft</title>
+</head>
+<body>
+    <h1>Benvenuto nel mio forum!</h1>
+    
+    <!-- Qui c'è il resto del tuo sito web -->
+
+    <!-- INCOLLA IL CODICE DI FIREBASE QUI SOTTO -->
+    <script type="module">
+      // Questi link caricano Firebase nel browser dei tuoi utenti
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+      import { getFirestore } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+
+      // Configurazione della tua app (usa i tuoi dati reali della console)
+      const firebaseConfig = {
+        apiKey: "LA_TUA_API_KEY_REALE",
+        authDomain: "database-minecraft-forum-site.firebaseapp.com",
+        projectId: "database-minecraft-forum-site",
+        storageBucket: "database-minecraft-forum-site.appspot.com",
+        messagingSenderId: "969345627083",
+        appId: "IL_TUO_APP_ID_REALE"
+      };
+
+      // Inizializza Firebase e il Database
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      console.log("Firebase è connesso con successo!");
+    </script>
+</body>
+</html>
+
 // Database locale per memorizzare Forum e Commenti
 let threads = [
     {
