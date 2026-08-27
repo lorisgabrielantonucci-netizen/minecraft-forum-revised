@@ -1,6 +1,6 @@
       // Questi link caricano Firebase nel browser dei tuoi utenti
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
-      import { getFirestore } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
       // Configurazione della tua app (usa i tuoi dati reali della console)
       const firebaseConfig = {
