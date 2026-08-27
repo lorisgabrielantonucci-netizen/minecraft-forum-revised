@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <title>Mio Forum Minecraft</title>
-</head>
-<body>
-    <h1>Benvenuto nel mio forum!</h1>
+  <h1>Benvenuto nel mio forum!</h1>
     
     <!-- Qui c'è il resto del tuo sito web -->
 
@@ -31,8 +24,8 @@
 
       console.log("Firebase è connesso con successo!");
     </script>
-</body>
-</html>
+
+
 
 // Database locale per memorizzare Forum e Commenti
 let threads = [
