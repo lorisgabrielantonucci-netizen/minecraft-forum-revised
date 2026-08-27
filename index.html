@@ -113,6 +113,27 @@
 </head>
 <body>
     <h1>Aka12plus production</h1>
-    <script src="./script.js"></script>
+    // Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyBrZ4HK2OBU3_eVR8a_4FxgpOfEb5t6k60",
+  authDomain: "database-minecraft-forum-site.firebaseapp.com",
+  databaseURL: "https://database-minecraft-forum-site-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "database-minecraft-forum-site",
+  storageBucket: "database-minecraft-forum-site.firebasestorage.app",
+  messagingSenderId: "969345627083",
+  appId: "1:969345627083:web:d9de7f2673edb5bd2cfc4e",
+  measurementId: "G-LT5ZYH7CEZ"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 </body>
 </html>
