@@ -1,10 +1,3 @@
-
-<h1>Benvenuto nel mio forum!</h1>
-    
-    <!-- Qui c'è il resto del tuo sito web -->
-
-    <!-- INCOLLA IL CODICE DI FIREBASE QUI SOTTO -->
-    <script type="module">
       // Questi link caricano Firebase nel browser dei tuoi utenti
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
       import { getFirestore } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
