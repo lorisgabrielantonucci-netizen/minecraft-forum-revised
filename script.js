@@ -1,4 +1,5 @@
-  <h1>Benvenuto nel mio forum!</h1>
+<script>
+<h1>Benvenuto nel mio forum!</h1>
     
     <!-- Qui c'è il resto del tuo sito web -->
 
