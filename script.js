@@ -1,4 +1,13 @@
-      // Questi link caricano Firebase nel browser dei tuoi utenti
+function toggleForm(id) {
+    const box = document.getElementById(id);
+    if (box) {
+        box.classList.toggle("hidden");
+    }
+}
+
+// Aggiungi questa riga per renderla visibile all'HTML:
+window.toggleForm = toggleForm;
+// Questi link caricano Firebase nel browser dei tuoi utenti
      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
