@@ -1,4 +1,4 @@
-<script>
+
 <h1>Benvenuto nel mio forum!</h1>
     
     <!-- Qui c'è il resto del tuo sito web -->
@@ -24,7 +24,7 @@
       const db = getFirestore(app);
 
       console.log("Firebase è connesso con successo!");
-    </script>
+    
 
 
 
